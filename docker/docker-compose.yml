@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: food-redistribution-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../backend:/app/backend
+    command: python backend/app/main.py

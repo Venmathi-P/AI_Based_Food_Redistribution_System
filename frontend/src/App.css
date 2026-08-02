@@ -1,0 +1,105 @@
+.app-shell {
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+.hero-panel {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: center;
+  background: linear-gradient(135deg, #4F46E5, #4338CA);
+  color: white;
+  padding: 32px;
+  border-radius: 24px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.8rem;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.hero-copy {
+  margin-top: 12px;
+  max-width: 640px;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.primary-btn,
+.secondary-btn {
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.primary-btn {
+  background: white;
+  color: #4F46E5;
+}
+
+.secondary-btn {
+  background: rgba(255,255,255,0.16);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.hero-card {
+  background: rgba(255,255,255,0.12);
+  padding: 20px;
+  border-radius: 18px;
+}
+
+.hero-card ul {
+  padding-left: 18px;
+  line-height: 1.8;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #E0E7FF;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.04);
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 1.4rem;
+  color: #4F46E5;
+}
+
+.stat-card span {
+  color: #567;
+  margin-top: 6px;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .hero-panel,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    display: flex;
+    flex-direction: column;
+  }
+}
