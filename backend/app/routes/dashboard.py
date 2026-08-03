@@ -2,8 +2,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from datetime import date
+
 from app.config.database import SessionLocal
 from app.models.inventory import Inventory
+from app.models.donation import Donation
 
 router = APIRouter(
     prefix="/dashboard",
@@ -22,7 +24,14 @@ def get_db():
 @router.get("/stats")
 def dashboard_stats(db: Session = Depends(get_db)):
 
-    inventory = db.query(Inventory).all()
+    # Temporary demo business
+    business_id = 1
+
+    inventory = (
+        db.query(Inventory)
+        .filter(Inventory.business_id == business_id)
+        .all()
+    )
 
     total_products = len(inventory)
 
@@ -30,37 +39,45 @@ def dashboard_stats(db: Session = Depends(get_db)):
 
     today = date.today()
 
-    expiring = 0
+    expiring = sum(
+        1
+        for item in inventory
+        if (item.expiry_date - today).days <= 7
+    )
 
-    for item in inventory:
-        days_left = (item.expiry_date - today).days
-        if days_left <= 7:
-            expiring += 1
+    donation_count = (
+        db.query(Donation)
+        .filter(Donation.business_id == business_id)
+        .count()
+    )
 
     return {
         "listings": total_products,
         "food_rescued": total_quantity,
         "expiring": expiring,
-        "ngos": 12
+        "donations": donation_count
     }
 
 
 @router.get("/category-chart")
 def category_chart(db: Session = Depends(get_db)):
 
+    business_id = 3
+
     rows = (
         db.query(
             Inventory.category,
             func.sum(Inventory.quantity)
         )
+        .filter(Inventory.business_id == business_id)
         .group_by(Inventory.category)
         .all()
     )
 
     return [
         {
-            "category": r[0],
-            "total": r[1]
+            "category": row[0],
+            "total": row[1]
         }
-        for r in rows
+        for row in rows
     ]

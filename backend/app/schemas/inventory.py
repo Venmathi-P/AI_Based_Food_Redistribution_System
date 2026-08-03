@@ -13,6 +13,16 @@ class InventoryCreate(BaseModel):
     business_id: int
 
 
+class POSInventory(BaseModel):
+    product_name: str
+    category: str
+    quantity: int
+    purchase_date: date
+    expiry_date: date
+    storage_type: str
+    barcode: str
+
+
 class InventoryResponse(InventoryCreate):
     id: int
 

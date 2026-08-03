@@ -8,6 +8,7 @@ from app.config.database import get_db
 from app.models.inventory import Inventory
 from app.schemas.inventory import InventoryCreate, InventoryResponse
 from app.utils.expiry import get_expiry_status
+from app.schemas.inventory import POSInventory
 
 router = APIRouter(
     prefix="/inventory",
@@ -35,10 +36,16 @@ def add_inventory(item: InventoryCreate, db: Session = Depends(get_db)):
 # ----------------------------
 # Get Inventory By Business
 # ----------------------------
-@router.get("/", response_model=list[InventoryResponse])
+@router.get("")
 def get_inventory(db: Session = Depends(get_db)):
 
-    return db.query(Inventory).all()
+    business_id = 3
+
+    return (
+        db.query(Inventory)
+        .filter(Inventory.business_id == business_id)
+        .all()
+    )
 
 # ----------------------------
 # Get Single Inventory By ID
@@ -137,7 +144,7 @@ async def upload_csv(
     for _, row in df.iterrows():
 
         item = Inventory(
-            business_id=1,
+            business_id=3,
             product_name=row["product_name"],
             category=row["category"],
             quantity=row["quantity"],
@@ -256,4 +263,56 @@ def category_summary(business_id: int, db: Session = Depends(get_db)):
         })
 
     return data
+
+
+@router.post("/pos-sync")
+def pos_sync(
+    data: POSInventory,
+    db: Session = Depends(get_db)
+):
+
+    # Demo business
+    business_id = 3
+
+    # Check if product already exists
+    existing = (
+        db.query(Inventory)
+        .filter(
+            Inventory.business_id == business_id,
+            Inventory.barcode == data.barcode
+        )
+        .first()
+    )
+
+    if existing:
+        existing.quantity += data.quantity
+        existing.expiry_date = data.expiry_date
+
+        db.commit()
+        db.refresh(existing)
+
+        return {
+            "message": "Inventory updated from POS",
+            "inventory": existing
+        }
+
+    item = Inventory(
+        business_id=business_id,
+        product_name=data.product_name,
+        category=data.category,
+        quantity=data.quantity,
+        purchase_date=data.purchase_date,
+        expiry_date=data.expiry_date,
+        storage_type=data.storage_type,
+        barcode=data.barcode
+    )
+
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+
+    return {
+        "message": "Inventory synced from POS",
+        "inventory": item
+    }
     

@@ -5,6 +5,7 @@ from datetime import date
 from app.config.database import get_db
 from app.models.donation import Donation
 from app.models.inventory import Inventory
+from sqlalchemy import desc
 
 router = APIRouter(
     prefix="/donations",
@@ -68,7 +69,14 @@ def donate_food(inventory_id: int, db: Session = Depends(get_db)):
 # ===========================
 @router.get("/")
 def get_all_donations(db: Session = Depends(get_db)):
-    return db.query(Donation).all()
+
+    business_id = 1
+
+    return (
+        db.query(Donation)
+        .filter(Donation.business_id == business_id)
+        .all()
+    )
 
 
 # ===========================
@@ -76,9 +84,15 @@ def get_all_donations(db: Session = Depends(get_db)):
 # ===========================
 @router.get("/pending")
 def get_pending_donations(db: Session = Depends(get_db)):
+
+    business_id = 1
+
     return (
         db.query(Donation)
-        .filter(Donation.status == "Pending")
+        .filter(
+            Donation.business_id == business_id,
+            Donation.status == "Pending"
+        )
         .all()
     )
 
@@ -175,9 +189,14 @@ def schedule_pickup(
 @router.get("/scheduled")
 def get_scheduled_donations(db: Session = Depends(get_db)):
 
+    business_id = 1
+
     return (
         db.query(Donation)
-        .filter(Donation.status == "Scheduled")
+        .filter(
+            Donation.business_id == business_id,
+            Donation.status == "Scheduled"
+        )
         .all()
     )
 @router.put("/{donation_id}/complete")
@@ -206,11 +225,54 @@ def complete_pickup(
     }
 
 
+# ===========================
+# Donation History
+# ===========================
 @router.get("/history")
 def donation_history(db: Session = Depends(get_db)):
 
+    business_id = 1
+
     return (
         db.query(Donation)
-        .filter(Donation.status == "Completed")
+        .filter(
+            Donation.business_id == business_id,
+            Donation.status == "Completed"
+        )
+        .all()
+
+
+    )
+
+
+# ===========================
+# Recent Donations
+# ===========================
+@router.get("/recent")
+def get_recent_donations(db: Session = Depends(get_db)):
+
+    business_id = 3
+
+    donations = (
+        db.query(Donation)
+        .filter(Donation.business_id == business_id)
+        .order_by(desc(Donation.id))
+        .limit(5)
         .all()
     )
+
+    result = []
+
+    for donation in donations:
+        result.append({
+            "id": donation.id,
+            "business_name": f"Business {donation.business_id}",
+            "food_name": donation.product_name,
+            "quantity": donation.quantity,
+            "ngo_name": f"NGO {donation.ngo_id}" if donation.ngo_id else "-",
+            "status": donation.status
+        })
+
+    return result
+
+
