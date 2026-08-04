@@ -12,7 +12,7 @@ This project is a full-stack prototype for reducing food waste by connecting sur
 ## Run the backend
 ```bash
 python -m pip install -r backend/requirements.txt
-python run_backend.py
+uvicorn app.main:app --reload
 ```
 
 The API will be available at http://localhost:8000
