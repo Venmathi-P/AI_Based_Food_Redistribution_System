@@ -8,7 +8,7 @@ function Register() {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
-        fullname: "",
+        business_name: "",
         email: "",
         password: "",
         role: "business"
@@ -36,21 +36,18 @@ function Register() {
         }
         catch (err) {
 
-            if (err.response) {
+    console.log(err.response?.data);
 
-                alert(
-                    err.response.data.detail ||
-                    JSON.stringify(err.response.data)
-                );
+    if (err.response) {
 
-            }
-            else {
+        alert(JSON.stringify(err.response.data, null, 2));
 
-                alert("Server not responding");
+    } else {
 
-            }
+        alert("Server not responding");
 
-        }
+    }
+}
 
     };
 
@@ -176,12 +173,12 @@ function Register() {
                         </div>
 
                         <input
-                            type="text"
-                            name="fullname"
-                            placeholder="Full Name"
-                            value={form.fullname}
-                            onChange={handleChange}
-                        />
+    type="text"
+    name="business_name"
+    placeholder="Business / NGO Name"
+    value={form.business_name}
+    onChange={handleChange}
+/>
 
                         <input
                             type="email"

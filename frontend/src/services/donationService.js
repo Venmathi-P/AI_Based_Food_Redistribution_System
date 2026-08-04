@@ -1,47 +1,48 @@
-import axios from "axios";
 import api from "./api";
 
-const API = axios.create({
-  baseURL: "http://127.0.0.1:8000",
-});
-
+// Donate Food
 export const donateFood = async (inventoryId) => {
-  const response = await API.post(`/donations/${inventoryId}`);
-  return response.data;
+    const response = await api.post(`/donations/${inventoryId}`);
+    return response.data;
 };
 
+// Business Donations
 export const getPendingDonations = async () => {
-  const response = await API.get("/donations/pending");
-  return response.data;
+    const response = await api.get("/donations/pending");
+    return response.data;
 };
 
 export const getAllDonations = async () => {
-  const response = await API.get("/donations");
-  return response.data;
+    const response = await api.get("/donations");
+    return response.data;
 };
-export const acceptDonation = async (donationId, ngoId) => {
 
-    const response = await API.put(
-        `/donations/${donationId}/accept/${ngoId}`
+// NGO Accept
+export const acceptDonation = async (donationId) => {
+    const response = await api.put(
+        `/donations/${donationId}/accept`
+    );
+    return response.data;
+};
+
+// Accepted Donations
+export const getAcceptedDonations = async () => {
+
+    const response = await api.get(
+        "/donations/accepted"
     );
 
     return response.data;
-
 };
-export const getAcceptedDonations = async (ngoId) => {
-    const response = await API.get(
-        `/donations/accepted/${ngoId}`
-    );
 
-    return response.data;
-};
+// Schedule Pickup
 export const schedulePickup = async (
     donationId,
     pickupDate,
     pickupTime
 ) => {
 
-    const response = await API.put(
+    const response = await api.put(
         `/donations/${donationId}/schedule`,
         null,
         {
@@ -54,27 +55,33 @@ export const schedulePickup = async (
 
     return response.data;
 };
+
+// Scheduled Donations
 export const getScheduledDonations = async () => {
-    const response = await API.get("/donations/scheduled");
+
+    const response = await api.get(
+        "/donations/scheduled"
+    );
+
     return response.data;
 };
+
+// Complete Pickup
 export const completePickup = async (donationId) => {
 
-    const response = await API.put(
+    const response = await api.put(
         `/donations/${donationId}/complete`
     );
 
     return response.data;
 };
 
-
+// History
 export const getHistory = async () => {
 
-    const response = await API.get(
+    const response = await api.get(
         "/donations/history"
     );
 
     return response.data;
 };
-
-

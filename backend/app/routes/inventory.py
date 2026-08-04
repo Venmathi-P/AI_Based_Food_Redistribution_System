@@ -9,7 +9,10 @@ from app.models.inventory import Inventory
 from app.schemas.inventory import InventoryCreate, InventoryResponse
 from app.utils.expiry import get_expiry_status
 from app.schemas.inventory import POSInventory
-
+from app.ai.waste_prediction import predict_waste
+from app.schemas.inventory import POSInventory
+from app.schemas.inventory import POSInventory
+from app.config.auth import get_current_user
 router = APIRouter(
     prefix="/inventory",
     tags=["Inventory"]
@@ -20,9 +23,18 @@ router = APIRouter(
 # Add Inventory
 # ----------------------------
 @router.post("/add")
-def add_inventory(item: InventoryCreate, db: Session = Depends(get_db)):
+def add_inventory(
+    item: InventoryCreate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
 
-    inventory = Inventory(**item.model_dump())
+    data = item.model_dump()
+
+    # Always use the logged-in business
+    data["business_id"] = current_user["user_id"]
+
+    inventory = Inventory(**data)
 
     db.add(inventory)
     db.commit()
@@ -37,9 +49,12 @@ def add_inventory(item: InventoryCreate, db: Session = Depends(get_db)):
 # Get Inventory By Business
 # ----------------------------
 @router.get("")
-def get_inventory(db: Session = Depends(get_db)):
+def get_inventory(
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
 
-    business_id = 3
+    business_id = current_user["user_id"]
 
     return (
         db.query(Inventory)
@@ -136,7 +151,8 @@ def delete_inventory(
 @router.post("/upload-csv")
 async def upload_csv(
     file: UploadFile = File(...),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
 ):
 
     df = pd.read_csv(file.file)
@@ -144,7 +160,7 @@ async def upload_csv(
     for _, row in df.iterrows():
 
         item = Inventory(
-            business_id=3,
+            business_id=current_user["user_id"],
             product_name=row["product_name"],
             category=row["category"],
             quantity=row["quantity"],
@@ -239,8 +255,13 @@ def categorize(product_name: str):
             "storage": "Unknown"
         }
     )
-@router.get("/category-summary/{business_id}")
-def category_summary(business_id: int, db: Session = Depends(get_db)):
+@router.get("/category-summary")
+def category_summary(
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+
+    business_id = current_user["user_id"]
 
     items = db.query(Inventory).filter(
         Inventory.business_id == business_id
@@ -250,7 +271,7 @@ def category_summary(business_id: int, db: Session = Depends(get_db)):
 
     for item in items:
 
-        risk = get_expiry_status(item.expiry_date)["status"]
+        ai = predict_waste(item)
 
         data.append({
             "id": item.id,
@@ -259,22 +280,29 @@ def category_summary(business_id: int, db: Session = Depends(get_db)):
             "quantity": item.quantity,
             "expiry_date": item.expiry_date,
             "storage": item.storage_type,
-            "risk": risk
+
+            # AI Output
+            "risk": ai["risk"],
+            "score": ai["score"],
+            "recommendation": ai["recommendation"]
         })
 
     return data
 
-
+# ----------------------------
+# POS Sync
+# ----------------------------
 @router.post("/pos-sync")
 def pos_sync(
     data: POSInventory,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
 ):
 
-    # Demo business
-    business_id = 3
+    # Logged-in business
+    business_id = current_user["user_id"]
 
-    # Check if product already exists
+    # Check whether barcode already exists
     existing = (
         db.query(Inventory)
         .filter(
@@ -285,8 +313,13 @@ def pos_sync(
     )
 
     if existing:
+
+        existing.product_name = data.product_name
+        existing.category = data.category
         existing.quantity += data.quantity
+        existing.purchase_date = data.purchase_date
         existing.expiry_date = data.expiry_date
+        existing.storage_type = data.storage_type
 
         db.commit()
         db.refresh(existing)
@@ -296,7 +329,7 @@ def pos_sync(
             "inventory": existing
         }
 
-    item = Inventory(
+    new_item = Inventory(
         business_id=business_id,
         product_name=data.product_name,
         category=data.category,
@@ -307,12 +340,11 @@ def pos_sync(
         barcode=data.barcode
     )
 
-    db.add(item)
+    db.add(new_item)
     db.commit()
-    db.refresh(item)
+    db.refresh(new_item)
 
     return {
         "message": "Inventory synced from POS",
-        "inventory": item
+        "inventory": new_item
     }
-    

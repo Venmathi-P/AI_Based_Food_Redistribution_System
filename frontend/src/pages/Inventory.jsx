@@ -3,7 +3,7 @@ import InventoryTable from "../components/InventoryTable";
 import CSVUpload from "../components/CSVUpload";
 import ExpiryAlert from "../components/ExpiryAlert";
 import BusinessLayout from "../layouts/BusinessLayout";
-
+import POSSync from "../components/POSSync";
 function Inventory() {
 
     return (
@@ -15,6 +15,7 @@ function Inventory() {
                 <h2 className="mb-4">
                     📦 Inventory Management
                 </h2>
+                
 
                 {/* Top Row */}
 
@@ -29,6 +30,7 @@ function Inventory() {
                     <div className="col-md-6">
 
                         <CSVUpload />
+                        <POSSync />
 
                         <div className="mt-3">
                             <ExpiryAlert />

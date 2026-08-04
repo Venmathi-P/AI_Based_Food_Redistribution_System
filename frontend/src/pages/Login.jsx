@@ -45,15 +45,10 @@ function Login() {
             }
 
             localStorage.setItem("token", res.data.access_token);
-
-localStorage.setItem("role", res.data.role);
-
-localStorage.setItem("user_id", String(res.data.id));
-
-localStorage.setItem(
-    "business_name",
-    res.data.business_name
-);
+            localStorage.setItem("role", res.data.role);
+            localStorage.setItem("user_id", String(res.data.id));
+            localStorage.setItem("business_name", res.data.business_name);
+            localStorage.setItem("email", form.email);
 
 console.log("Stored user_id:", res.data.id);
 
@@ -63,7 +58,8 @@ navigate("/dashboard");
 
             if (err.response) {
 
-                alert(err.response.data.detail || "Invalid Login");
+                console.log(err.response.data);
+alert(JSON.stringify(err.response.data, null, 2));
 
             } else {
 
