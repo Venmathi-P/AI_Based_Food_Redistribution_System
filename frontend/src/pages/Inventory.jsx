@@ -1,9 +1,10 @@
 import InventoryForm from "../components/InventoryForm";
 import InventoryTable from "../components/InventoryTable";
 import CSVUpload from "../components/CSVUpload";
-import ExpiryAlert from "../components/ExpiryAlert";
 import BusinessLayout from "../layouts/BusinessLayout";
 import POSSync from "../components/POSSync";
+import AITraining from "../components/AITraining";
+
 function Inventory() {
 
     return (
@@ -15,11 +16,15 @@ function Inventory() {
                 <h2 className="mb-4">
                     📦 Inventory Management
                 </h2>
-                
 
-                {/* Top Row */}
+
+                {/* ========================================= */}
+                {/* INVENTORY INPUT */}
+                {/* ========================================= */}
 
                 <div className="row mb-4">
+
+                    {/* Manual Inventory */}
 
                     <div className="col-md-6">
 
@@ -27,20 +32,39 @@ function Inventory() {
 
                     </div>
 
+
+                    {/* Bulk CSV + POS */}
+
                     <div className="col-md-6">
 
                         <CSVUpload />
-                        <POSSync />
 
-                        <div className="mt-3">
-                            <ExpiryAlert />
-                        </div>
+                        <POSSync />
 
                     </div>
 
                 </div>
 
-                {/* Inventory Table */}
+
+                {/* ========================================= */}
+                {/* AI TRAINING */}
+                {/* BELOW MANUAL + BULK/POS */}
+                {/* ========================================= */}
+
+                <div className="row mb-4">
+
+                    <div className="col-12">
+
+                        <AITraining />
+
+                    </div>
+
+                </div>
+
+
+                {/* ========================================= */}
+                {/* INVENTORY TABLE */}
+                {/* ========================================= */}
 
                 <div className="card shadow">
 

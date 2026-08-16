@@ -2,78 +2,125 @@ import { useEffect, useState } from "react";
 import { getExpiryAlerts } from "../services/expiryService";
 
 function ExpiryAlert() {
-  const [alerts, setAlerts] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const businessId = localStorage.getItem("user_id");
+    const [alerts, setAlerts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    console.log("Business ID:", businessId);
+    useEffect(() => {
 
-    if (!businessId) {
-      console.error("Business ID not found in localStorage");
-      setLoading(false);
-      return;
+        const businessId = localStorage.getItem("user_id");
+
+        if (!businessId) {
+            console.error("Business ID not found");
+            setLoading(false);
+            return;
+        }
+
+        getExpiryAlerts(businessId)
+            .then((res) => {
+
+                console.log("Expiry API Response:", res.data);
+
+                if (Array.isArray(res.data)) {
+                    setAlerts(res.data);
+                } else {
+                    setAlerts([]);
+                }
+
+            })
+            .catch((error) => {
+
+                console.error("Expiry API Error:", error);
+                setAlerts([]);
+
+            })
+            .finally(() => {
+
+                setLoading(false);
+
+            });
+
+    }, []);
+
+
+    if (loading) {
+        return (
+            <div className="expiry-section">
+                <h3>⚠️ Expiry Alerts</h3>
+                <p>Loading expiry alerts...</p>
+            </div>
+        );
     }
 
-    getExpiryAlerts(businessId)
-      .then((res) => {
-        console.log("Expiry API Response:", res.data);
 
-        if (Array.isArray(res.data)) {
-          setAlerts(res.data);
-        } else {
-          console.error("Unexpected API response:", res.data);
-          setAlerts([]);
-        }
-      })
-      .catch((err) => {
-        console.error("Expiry API Error:", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    return (
+        <div className="expiry-section">
 
-  if (loading) {
-    return <p>Loading expiry alerts...</p>;
-  }
+            <div className="expiry-header">
 
-  return (
-    <div className="expiry-alert">
-      <h3>⚠️ Expiry Alerts</h3>
+                <div>
+                    <h3>⚠️ Expiry Alerts</h3>
 
-      {alerts.length === 0 ? (
-        <p>No expiry alerts</p>
-      ) : (
-        alerts.map((item, index) => (
-          <div
-            key={index}
-            style={{
-              border: "1px solid #ddd",
-              padding: "10px",
-              marginBottom: "10px",
-              borderRadius: "6px",
-            }}
-          >
-            <h4>{item.product_name}</h4>
+                    <p>
+                        Food items that need attention
+                    </p>
+                </div>
 
-            <p>
-              <strong>Expiry:</strong> {item.expiry_date}
-            </p>
+                <span className="expiry-count">
+                    {alerts.length} Alerts
+                </span>
 
-            <p>
-              <strong>Days Left:</strong> {item.days_left}
-            </p>
+            </div>
 
-            <p>
-              <strong>Risk:</strong> {item.risk}
-            </p>
-          </div>
-        ))
-      )}
-    </div>
-  );
+
+            {alerts.length === 0 ? (
+
+                <div className="no-expiry-alerts">
+                    ✓ No expiry alerts
+                </div>
+
+            ) : (
+
+                <div className="expiry-alert-grid">
+
+                    {alerts.map((item, index) => (
+
+                        <div
+                            className="expiry-card"
+                            key={index}
+                        >
+
+                            <h4>
+                                {item.product_name}
+                            </h4>
+
+                            <p>
+                                <strong>Expiry:</strong>{" "}
+                                {item.expiry_date}
+                            </p>
+
+                            <p>
+                                <strong>Days Left:</strong>{" "}
+                                {item.days_left}
+                            </p>
+
+                            <p>
+                                <strong>Risk:</strong>{" "}
+                                <span className="risk-text">
+                                    {item.risk}
+                                </span>
+                            </p>
+
+                        </div>
+
+                    ))}
+
+                </div>
+
+            )}
+
+        </div>
+    );
 }
 
 export default ExpiryAlert;

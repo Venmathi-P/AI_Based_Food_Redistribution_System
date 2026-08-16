@@ -1,0 +1,11 @@
+product_id,dataset_item_id,dataset_product_name,model_file
+ITEM_001,1,Paneer,ITEM_001_prophet.pkl
+ITEM_002,2,Tomato,ITEM_002_prophet.pkl
+ITEM_003,3,Onion,ITEM_003_prophet.pkl
+ITEM_004,4,Chicken,ITEM_004_prophet.pkl
+ITEM_005,5,Mutton,ITEM_005_prophet.pkl
+ITEM_006,6,Rohu Fish,ITEM_006_prophet.pkl
+ITEM_007,7,Eggs,ITEM_007_prophet.pkl
+ITEM_008,8,Rice,ITEM_008_prophet.pkl
+ITEM_009,9,Sugar,ITEM_009_prophet.pkl
+ITEM_010,10,Milk,ITEM_010_prophet.pkl

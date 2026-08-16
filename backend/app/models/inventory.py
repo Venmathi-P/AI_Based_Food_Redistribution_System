@@ -26,3 +26,7 @@ class Inventory(Base):
     barcode = Column(String(100))
 
     created_at = Column(DateTime, server_default=func.now())
+
+    storage_capacity = Column(Integer, default=100)
+
+    created_at = Column(DateTime, server_default=func.now())

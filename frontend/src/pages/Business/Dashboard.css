@@ -1,0 +1,215 @@
+/* =========================================
+   DASHBOARD SECTION
+========================================= */
+
+.dashboard-section {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+
+/* =========================================
+   EXPIRY ALERT SECTION
+========================================= */
+
+.expiry-section {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   EXPIRY HEADER
+========================================= */
+
+.expiry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+.expiry-header h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+
+.expiry-header p {
+    margin: 5px 0 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+.expiry-count {
+    background: #fff7ed;
+    color: #ea580c;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   HORIZONTAL EXPIRY CARDS
+========================================= */
+
+.expiry-alert-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(230px, 1fr));
+
+    gap: 16px;
+
+    width: 100%;
+}
+
+
+/* =========================================
+   INDIVIDUAL EXPIRY CARD
+========================================= */
+
+.expiry-card {
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    min-width: 0;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.expiry-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+.expiry-card h4 {
+    margin: 0 0 14px;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    color: #1e293b;
+}
+
+
+.expiry-info p {
+    margin: 8px 0;
+
+    font-size: 14px;
+
+    color: #475569;
+}
+
+
+.expiry-info strong {
+    color: #1e293b;
+}
+
+
+/* =========================================
+   RISK STYLING
+========================================= */
+
+.expired {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+
+.high {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+
+.medium {
+    color: #ea580c;
+    font-weight: 700;
+}
+
+
+.low {
+    color: #16a34a;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   NO ALERTS
+========================================= */
+
+.no-expiry-alerts {
+    background: #f0fdf4;
+
+    border: 1px solid #bbf7d0;
+
+    border-radius: 10px;
+
+    padding: 18px;
+
+    color: #15803d;
+
+    font-weight: 600;
+}
+
+
+.expiry-loading {
+    color: #64748b;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .expiry-section {
+        padding: 18px;
+    }
+
+    .expiry-header {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .expiry-alert-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (min-width: 769px) and (max-width: 1100px) {
+
+    .expiry-alert-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}

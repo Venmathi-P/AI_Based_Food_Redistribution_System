@@ -1,4 +1,13 @@
-*.mp4
-*.zip
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+
+# Virtual environments
+venv/
+lstm_env/
+
+# Environment files
+.env
+
+# VS Code
+.vscode/

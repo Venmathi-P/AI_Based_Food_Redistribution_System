@@ -1,8 +1,8 @@
+import "./Dashboard.css";
 import BusinessLayout from "../../layouts/BusinessLayout";
 import DashboardCard from "../../components/DashboardCard";
 import FoodChart from "../../components/FoodChart";
 import RecentTable from "../../components/RecentTable";
-import ExpiryAlert from "../../components/ExpiryAlert";
 
 import { useEffect, useState } from "react";
 import { getDashboardStats } from "../../services/dashboard";
@@ -21,15 +21,21 @@ export default function Dashboard() {
     }, []);
 
     const loadDashboard = async () => {
-        const data = await getDashboardStats();
-        setStats(data);
+        try {
+            const data = await getDashboardStats();
+            setStats(data);
+        } catch (error) {
+            console.error("Dashboard API Error:", error);
+        }
     };
 
     return (
 
         <BusinessLayout>
 
-            {/* Dashboard Cards */}
+            {/* ============================= */}
+            {/* DASHBOARD STAT CARDS */}
+            {/* ============================= */}
 
             <div className="row g-4">
 
@@ -71,26 +77,38 @@ export default function Dashboard() {
 
             </div>
 
-            {/* Chart + Expiry */}
+
+            {/* ============================= */}
+            {/* FOOD CHART */}
+            {/* ============================= */}
 
             <div className="row mt-4">
 
-                <div className="col-lg-8 mb-4">
-                    <FoodChart />
-                </div>
+                <div className="col-12">
 
-                <div className="col-lg-4 mb-4">
-                    <ExpiryAlert />
+                    <div className="dashboard-section">
+
+                        <FoodChart />
+
+                    </div>
+
                 </div>
 
             </div>
 
-            {/* Recent Table */}
 
-            <div className="row">
+
+
+            {/* ============================= */}
+            {/* RECENT INVENTORY */}
+            {/* ============================= */}
+
+            <div className="row mt-4">
 
                 <div className="col-12">
+
                     <RecentTable />
+
                 </div>
 
             </div>

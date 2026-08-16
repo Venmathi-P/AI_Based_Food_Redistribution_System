@@ -7,7 +7,7 @@ import Inventory from "./pages/Inventory";
 
 // Business
 import BusinessDashboard from "./pages/Business/Dashboard";
-
+import ExpiryAlerts from "./pages/Business/ExpiryAlerts";
 // NGO
 import NgoDashboard from "./pages/NGO/Dashboard";
 import AvailableDonations from "./pages/NGO/AvailableDonations";
@@ -16,6 +16,8 @@ import PickupSchedule from "./pages/NGO/PickupSchedule";
 import History from "./pages/NGO/History";
 import Profile from "./pages/NGO/Profile";
 import Dashboard from "./pages/Dashboard";
+import AITest from "./pages/AITest";
+
 function App() {
 
     return (
@@ -31,16 +33,22 @@ function App() {
                 <Route path="/register" element={<Register />} />
 
                 {/* Business */}
+{/* Business */}
 
-                <Route
-                    path="/business/dashboard"
-                    element={<BusinessDashboard />}
-                />
+<Route
+    path="/business/dashboard"
+    element={<BusinessDashboard />}
+/>
 
-                <Route
-                    path="/inventory"
-                    element={<Inventory />}
-                />
+<Route
+    path="/inventory"
+    element={<Inventory />}
+/>
+
+<Route
+    path="/expiry-alerts"
+    element={<ExpiryAlerts />}
+/>
 
                 {/* NGO */}
 
@@ -74,6 +82,7 @@ function App() {
                     element={<Profile />}
                 />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/ai-test" element={<AITest />} />
 
             </Routes>
 

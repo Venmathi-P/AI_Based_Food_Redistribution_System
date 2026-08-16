@@ -22,29 +22,9 @@ export default function Sidebar() {
                     Inventory
                 </Link>
 
-                <Link to="#">
+                <Link to="/expiry-alerts">
                     <i className="bi bi-list-check me-2"></i>
-                    Listings
-                </Link>
-
-                <Link to="#">
-                    <i className="bi bi-building me-2"></i>
-                    NGOs
-                </Link>
-
-                <Link to="#">
-                    <i className="bi bi-truck me-2"></i>
-                    Pickups
-                </Link>
-
-                <Link to="#">
-                    <i className="bi bi-graph-up-arrow me-2"></i>
-                    Analytics
-                </Link>
-
-                <Link to="#">
-                    <i className="bi bi-gear me-2"></i>
-                    Settings
+                    Expiry Alerts
                 </Link>
 
             </div>
@@ -52,5 +32,4 @@ export default function Sidebar() {
         </div>
 
     );
-
 }
