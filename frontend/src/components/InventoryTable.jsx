@@ -412,44 +412,121 @@ function InventoryTable() {
         }
 
     };
+// =====================================================
+// DONATE / CREATE SURPLUS LISTING
+// =====================================================
+
+const handleDonate = async (item) => {
+
+    // Pickup location
+    const pickupLocation = prompt(
+        "Enter Pickup Location:",
+        ""
+    );
+
+    if (
+        pickupLocation === null ||
+        pickupLocation.trim() === ""
+    ) {
+        alert("Pickup location is required.");
+        return;
+    }
 
 
-    // =====================================================
-    // DONATE
-    // =====================================================
+    // Available From
+    const availableFrom = prompt(
+        "Available From (YYYY-MM-DDTHH:MM):",
+        ""
+    );
 
-    const handleDonate = async (
-        inventoryId
-    ) => {
+    if (
+        availableFrom === null ||
+        availableFrom.trim() === ""
+    ) {
+        alert("Available from time is required.");
+        return;
+    }
 
-        try {
 
-            const response =
-                await donateFood(
-                    inventoryId
-                );
+    // Available Until
+    const availableUntil = prompt(
+        "Available Until (YYYY-MM-DDTHH:MM):",
+        ""
+    );
 
-            alert(
-                response.message
-            );
+    if (
+        availableUntil === null ||
+        availableUntil.trim() === ""
+    ) {
+        alert("Available until time is required.");
+        return;
+    }
 
-            fetchInventory();
 
-        } catch (error) {
+    // Validate time window
+    const fromDate = new Date(
+        availableFrom
+    );
 
-            console.error(
-                error
-            );
+    const untilDate = new Date(
+        availableUntil
+    );
 
-            alert(
-                error.response?.data?.detail ||
-                "Unable to donate food."
-            );
 
-        }
+    if (
+        isNaN(fromDate.getTime()) ||
+        isNaN(untilDate.getTime())
+    ) {
+        alert(
+            "Please enter valid date and time."
+        );
+        return;
+    }
 
-    };
 
+    if (
+        untilDate <= fromDate
+    ) {
+        alert(
+            "Available Until must be later than Available From."
+        );
+        return;
+    }
+
+
+    try {
+
+        const response = await donateFood(
+            item.id,
+            pickupLocation,
+            availableFrom,
+            availableUntil
+        );
+
+
+        alert(
+            response.message
+        );
+
+
+        fetchInventory();
+
+    } catch (error) {
+
+        console.error(
+            "Donation error:",
+            error
+        );
+
+
+        alert(
+            error.response?.data?.detail ||
+            "Unable to donate food."
+        );
+
+    }
+
+};
 
     // =====================================================
     // AI ANALYSIS
@@ -782,10 +859,8 @@ function InventoryTable() {
                                                 <button
                                                     className="btn btn-success btn-sm me-2 mb-2"
                                                     onClick={() =>
-                                                        handleDonate(
-                                                            item.id
-                                                        )
-                                                    }
+    handleDonate(item)
+}
                                                     disabled={
                                                         item.is_donated
                                                     }

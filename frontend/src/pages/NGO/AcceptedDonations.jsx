@@ -1,94 +1,253 @@
 import { useEffect, useState } from "react";
 import NGOLayout from "../../layouts/NGOLayout";
+
 import {
     getAcceptedDonations,
     schedulePickup
 } from "../../services/donationService";
 
+
 function AcceptedDonations() {
 
     const [donations, setDonations] = useState([]);
 
-    const [pickupDate, setPickupDate] = useState("");
+    // Store date/time separately for each donation
+    const [pickupData, setPickupData] = useState({});
 
-    const [pickupTime, setPickupTime] = useState("");
+    const [schedulingId, setSchedulingId] = useState(null);
+
+
+    // =====================================================
+    // LOAD ACCEPTED DONATIONS
+    // =====================================================
 
     useEffect(() => {
+
         loadAcceptedDonations();
+
     }, []);
+
 
     const loadAcceptedDonations = async () => {
 
         try {
 
-            const ngoId = Number(localStorage.getItem("user_id"));
+            const ngoId =
+                Number(
+                    localStorage.getItem("user_id")
+                );
 
             if (!ngoId) {
-                alert("Please login again.");
+
+                alert(
+                    "Please login again."
+                );
+
                 return;
             }
 
-            const data = await getAcceptedDonations(ngoId);
+
+            const data =
+                await getAcceptedDonations(
+                    ngoId
+                );
 
             setDonations(data);
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Failed to load accepted donations:",
+                error
+            );
 
         }
 
     };
 
-    const handleSchedule = async (donationId) => {
 
-        if (!pickupDate || !pickupTime) {
+    // =====================================================
+    // DATE CHANGE
+    // =====================================================
 
-            alert("Please select Pickup Date and Time");
+    const handleDateChange = (
+        donationId,
+        value
+    ) => {
+
+        setPickupData(
+            previous => ({
+                ...previous,
+
+                [donationId]: {
+
+                    ...previous[
+                        donationId
+                    ],
+
+                    date: value
+
+                }
+
+            })
+        );
+
+    };
+
+
+    // =====================================================
+    // TIME CHANGE
+    // =====================================================
+
+    const handleTimeChange = (
+        donationId,
+        value
+    ) => {
+
+        setPickupData(
+            previous => ({
+                ...previous,
+
+                [donationId]: {
+
+                    ...previous[
+                        donationId
+                    ],
+
+                    time: value
+
+                }
+
+            })
+        );
+
+    };
+
+
+    // =====================================================
+    // SCHEDULE PICKUP
+    // =====================================================
+
+    const handleSchedule = async (
+        donationId
+    ) => {
+
+        const date =
+            pickupData[
+                donationId
+            ]?.date;
+
+        const time =
+            pickupData[
+                donationId
+            ]?.time;
+
+
+        // Validate date/time
+
+        if (!date || !time) {
+
+            alert(
+                "Please select Pickup Date and Time"
+            );
 
             return;
 
         }
 
+
         try {
+
+            setSchedulingId(
+                donationId
+            );
+
 
             await schedulePickup(
                 donationId,
-                pickupDate,
-                pickupTime
+                date,
+                time
             );
 
-            alert("Pickup Scheduled Successfully");
 
-            setPickupDate("");
+            alert(
+                "Pickup Scheduled Successfully"
+            );
 
-            setPickupTime("");
+
+            // Clear only this donation's
+            // selected date/time
+
+            setPickupData(
+                previous => {
+
+                    const updated = {
+                        ...previous
+                    };
+
+                    delete updated[
+                        donationId
+                    ];
+
+                    return updated;
+
+                }
+            );
+
+
+            // Reload accepted donations
+            // Scheduled donation will disappear
 
             loadAcceptedDonations();
 
+
         } catch (error) {
 
-            console.log(error);
+            console.error(
+                "Schedule pickup error:",
+                error
+            );
 
-            alert("Unable to Schedule Pickup");
+
+            alert(
+                error.response?.data?.detail ||
+                "Unable to Schedule Pickup"
+            );
+
+        } finally {
+
+            setSchedulingId(
+                null
+            );
 
         }
 
     };
 
+
     return (
 
         <NGOLayout>
 
-            <div className="container-fluid">
+            <div className="container-fluid fb-animate-in">
 
-                <h2 className="mb-4">
+                {/* ================================================= */}
+                {/* PAGE HEADER */}
+                {/* ================================================= */}
 
-                    Accepted Donations
+                <div className="fb-page-header">
+                    <div>
+                        <h2>Accepted Donations</h2>
+                        <p>Donations you've accepted, awaiting pickup scheduling.</p>
+                    </div>
+                </div>
 
-                </h2>
 
-                <div className="card shadow-sm">
+                {/* ================================================= */}
+                {/* TABLE CARD */}
+                {/* ================================================= */}
+
+                <div className="card">
 
                     <div className="card-body">
 
@@ -96,102 +255,233 @@ function AcceptedDonations() {
 
                             <div className="text-center p-4">
 
-                                <h5>No Accepted Donations</h5>
+                                <h5>
+                                    No Accepted Donations
+                                </h5>
+
+                                <p className="text-muted mb-0">
+
+                                    All accepted donations
+                                    have been scheduled.
+
+                                </p>
 
                             </div>
 
                         ) : (
 
-                            <table className="table table-hover">
+                            <div className="table-responsive">
 
-                                <thead>
+                                <table className="table table-hover align-middle">
 
-                                    <tr>
+                                    <thead>
 
-                                        <th>Business</th>
+                                        <tr>
 
-                                        <th>Food</th>
+                                            <th>
+                                                Business
+                                            </th>
 
-                                        <th>Category</th>
+                                            <th>
+                                                Food
+                                            </th>
 
-                                        <th>Quantity</th>
+                                            <th>
+                                                Category
+                                            </th>
 
-                                        <th>Expiry</th>
+                                            <th>
+                                                Quantity
+                                            </th>
 
-                                        <th>Date</th>
+                                            <th>
+                                                Expiry
+                                            </th>
 
-                                        <th>Time</th>
+                                            <th>
+                                                Date
+                                            </th>
 
-                                        <th>Action</th>
+                                            <th>
+                                                Time
+                                            </th>
 
-                                    </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                                    {donations.map((item) => (
-
-                                        <tr key={item.id}>
-
-                                            <td>{item.business_id}</td>
-
-                                            <td>{item.product_name}</td>
-
-                                            <td>{item.category}</td>
-
-                                            <td>{item.quantity}</td>
-
-                                            <td>{item.expiry_date}</td>
-
-                                            <td>
-
-                                                <input
-                                                    type="date"
-                                                    className="form-control"
-                                                    value={pickupDate}
-                                                    onChange={(e) =>
-                                                        setPickupDate(e.target.value)
-                                                    }
-                                                />
-
-                                            </td>
-
-                                            <td>
-
-                                                <input
-                                                    type="time"
-                                                    className="form-control"
-                                                    value={pickupTime}
-                                                    onChange={(e) =>
-                                                        setPickupTime(e.target.value)
-                                                    }
-                                                />
-
-                                            </td>
-
-                                            <td>
-
-                                                <button
-                                                    className="btn btn-primary btn-sm"
-                                                    onClick={() =>
-                                                        handleSchedule(item.id)
-                                                    }
-                                                >
-
-                                                    Schedule
-
-                                                </button>
-
-                                            </td>
+                                            <th>
+                                                Action
+                                            </th>
 
                                         </tr>
 
-                                    ))}
+                                    </thead>
 
-                                </tbody>
 
-                            </table>
+                                    <tbody>
+
+                                        {donations.map(
+                                            (item) => (
+
+                                                <tr
+                                                    key={
+                                                        item.id
+                                                    }
+                                                >
+
+                                                    {/* BUSINESS */}
+
+                                                    <td>
+
+                                                        {
+                                                            item.business_id
+                                                        }
+
+                                                    </td>
+
+
+                                                    {/* FOOD */}
+
+                                                    <td>
+
+                                                        <strong>
+
+                                                            {
+                                                                item.product_name
+                                                            }
+
+                                                        </strong>
+
+                                                    </td>
+
+
+                                                    {/* CATEGORY */}
+
+                                                    <td>
+
+                                                        {
+                                                            item.category
+                                                        }
+
+                                                    </td>
+
+
+                                                    {/* QUANTITY */}
+
+                                                    <td>
+
+                                                        {
+                                                            item.quantity
+                                                        }
+
+                                                    </td>
+
+
+                                                    {/* EXPIRY */}
+
+                                                    <td>
+
+                                                        {
+                                                            item.expiry_date
+                                                        }
+
+                                                    </td>
+
+
+                                                    {/* PICKUP DATE */}
+
+                                                    <td>
+
+                                                        <input
+                                                            type="date"
+                                                            className="form-control"
+                                                            value={
+                                                                pickupData[
+                                                                    item.id
+                                                                ]?.date ||
+                                                                ""
+                                                            }
+                                                            onChange={
+                                                                (e) =>
+                                                                    handleDateChange(
+                                                                        item.id,
+                                                                        e.target.value
+                                                                    )
+                                                            }
+                                                            min={
+                                                                new Date()
+                                                                    .toISOString()
+                                                                    .split(
+                                                                        "T"
+                                                                    )[0]
+                                                            }
+                                                        />
+
+                                                    </td>
+
+
+                                                    {/* PICKUP TIME */}
+
+                                                    <td>
+
+                                                        <input
+                                                            type="time"
+                                                            className="form-control"
+                                                            value={
+                                                                pickupData[
+                                                                    item.id
+                                                                ]?.time ||
+                                                                ""
+                                                            }
+                                                            onChange={
+                                                                (e) =>
+                                                                    handleTimeChange(
+                                                                        item.id,
+                                                                        e.target.value
+                                                                    )
+                                                            }
+                                                        />
+
+                                                    </td>
+
+
+                                                    {/* ACTION */}
+
+                                                    <td>
+
+                                                        <button
+                                                            className="btn btn-primary btn-sm"
+                                                            onClick={() =>
+                                                                handleSchedule(
+                                                                    item.id
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                schedulingId ===
+                                                                item.id
+                                                            }
+                                                        >
+
+                                                            {schedulingId ===
+                                                            item.id
+
+                                                                ? "⏳ Scheduling..."
+
+                                                                : "📅 Schedule"
+
+                                                            }
+
+                                                        </button>
+
+                                                    </td>
+
+                                                </tr>
+
+                                            )
+                                        )}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
 
                         )}
 
@@ -206,5 +496,6 @@ function AcceptedDonations() {
     );
 
 }
+
 
 export default AcceptedDonations;

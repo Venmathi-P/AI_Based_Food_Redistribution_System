@@ -1,35 +1,27 @@
-import { Link } from "react-router-dom";
+import NotificationBell from "./NotificationBell";
 
 function Navbar() {
     return (
-        <div
-            className="d-flex justify-content-between align-items-center bg-white p-3 rounded shadow-sm mb-4"
-        >
-            <div>
-                <h3 className="mb-0">
-                    Food Rescue Dashboard
-                </h3>
+        <div className="bg-white p-3 rounded shadow-sm mb-4">
 
-                <small className="text-muted">
-                    Connecting surplus food with NGOs
-                </small>
-            </div>
+            <div className="d-flex justify-content-between align-items-center">
 
-            <div className="d-flex gap-3 align-items-center">
+                {/* LEFT SIDE */}
+                <div>
+                    <h3 className="mb-0">
+                        Food Rescue Dashboard
+                    </h3>
 
-                <Link to="/business/dashboard">
-                    Dashboard
-                </Link>
+                    <small className="text-muted">
+                        Connecting surplus food with NGOs
+                    </small>
+                </div>
 
-                <Link to="/inventory">
-                    Inventory
-                </Link>
-
-                <Link to="/">
-                    Logout
-                </Link>
+                {/* RIGHT SIDE */}
+                <NotificationBell />
 
             </div>
+
         </div>
     );
 }

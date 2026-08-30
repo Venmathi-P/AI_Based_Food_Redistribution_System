@@ -1,4 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import NotificationBell from "../components/NotificationBell";
+import "../styles/shell.css";
 
 function NGOLayout({ children }) {
 
@@ -6,36 +8,26 @@ function NGOLayout({ children }) {
     const navigate = useNavigate();
 
     const menu = [
+        { name: "Dashboard", path: "/ngo/dashboard", icon: "bi-speedometer2" },
+        { name: "Available Donations", path: "/ngo/available-donations", icon: "bi-basket" },
+        { name: "Accepted Donations", path: "/ngo/accepted-donations", icon: "bi-check2-circle" },
+        { name: "Pickup Schedule", path: "/ngo/pickup-schedule", icon: "bi-truck" },
+        { name: "History", path: "/ngo/history", icon: "bi-clock-history" },
+        { name: "Profile", path: "/ngo/profile", icon: "bi-person-circle" },
         {
-            name: "Dashboard",
-            path: "/ngo/dashboard"
-        },
-        {
-            name: "Available Donations",
-            path: "/ngo/available-donations"
-        },
-        {
-            name: "Accepted Donations",
-            path: "/ngo/accepted-donations"
-        },
-        {
-            name: "Pickup Schedule",
-            path: "/ngo/pickup-schedule"
-        },
-        {
-            name: "History",
-            path: "/ngo/history"
-        },
-        {
-            name: "Profile",
-            path: "/ngo/profile"
-        }
+    name: "My Requirements",
+    path: "/ngo/requirements",
+    icon: "bi-clipboard-check"
+},
+        { name: "AI Matching", path: "/ngo/matching", icon: "bi-robot" },
+        { name: "Sustainability", path: "/ngo/sustainability", icon: "bi-tree" },
     ];
 
     const handleLogout = () => {
 
         localStorage.removeItem("token");
         localStorage.removeItem("role");
+        localStorage.removeItem("user_id");
 
         navigate("/");
 
@@ -43,63 +35,57 @@ function NGOLayout({ children }) {
 
     return (
 
-        <div className="d-flex">
+        <div className="fb-shell">
 
-            {/* Sidebar */}
+            <NotificationBell />
 
-            <div
-    className="text-white p-3 d-flex flex-column"
-    style={{
-        width: "250px",
-        minHeight: "100vh",
-        background: "linear-gradient(180deg, #2563EB, #1E40AF)"
-    }}
->
+            {/* =========================================
+                SIDEBAR
+            ========================================= */}
 
-                <h2 className="mb-4">
-                    Food
-                    Redistribution NGO
-                </h2>
+            <div className="fb-sidebar fb-sidebar--ngo">
 
-                {/* Menu */}
+                <div className="fb-sidebar-brand">
+                    <div className="fb-sidebar-brand-mark">🌱</div>
+                    <div className="fb-sidebar-brand-text">
+                        FoodBridge
+                        <span>NGO Portal</span>
+                    </div>
+                </div>
 
-                <div className="flex-grow-1">
+                <nav className="fb-sidebar-nav">
+                    <div className="fb-sidebar-nav-label">Main Menu</div>
 
                     {menu.map((item) => (
-
                         <Link
                             key={item.path}
                             to={item.path}
-                            className={`d-block text-decoration-none p-2 rounded mb-2 ${
-                                location.pathname === item.path
-                                    ? "bg-light text-success fw-bold"
-                                    : "text-white"
-                            }`}
+                            className={`fb-sidebar-link ${location.pathname === item.path ? "active" : ""}`}
                         >
-                            {item.name}
+                            <i className={`bi ${item.icon}`}></i>
+                            <span>{item.name}</span>
                         </Link>
-
                     ))}
+                </nav>
 
+                <div className="fb-sidebar-footer">
+                    <button className="fb-sidebar-logout" onClick={handleLogout}>
+                        <i className="bi bi-box-arrow-right"></i>
+                        <span>Logout</span>
+                    </button>
                 </div>
-
-                {/* Logout Button */}
-
-                <button
-                    className="btn btn-danger w-100 mt-auto"
-                    onClick={handleLogout}
-                >
-                    Logout
-                </button>
 
             </div>
 
-            {/* Main Content */}
 
-            <div className="flex-grow-1 p-4 bg-light">
+            {/* =========================================
+                MAIN CONTENT
+            ========================================= */}
 
-                {children}
-
+            <div className="fb-main">
+                <div className="fb-content">
+                    {children}
+                </div>
             </div>
 
         </div>

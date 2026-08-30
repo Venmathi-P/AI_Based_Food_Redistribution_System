@@ -23,6 +23,9 @@ from app.routes.inventory import router as inventory_router
 from app.routes.dashboard import router as dashboard_router
 from app.routes.donation import router as donation_router
 from app.routes import ai
+from app.routes import ngo_requirement
+from app.routes import analytics
+from app.routes import ngo_analytics
 
 # =========================================================
 # IMPORT SCHEDULER
@@ -116,7 +119,12 @@ app.include_router(donation_router)
 
 app.include_router(ai.router)
 
+app.include_router(ngo_requirement.router)
 
+app.include_router(analytics.router)
+app.include_router(
+    ngo_analytics.router
+)
 # =========================================================
 # ROOT
 # =========================================================

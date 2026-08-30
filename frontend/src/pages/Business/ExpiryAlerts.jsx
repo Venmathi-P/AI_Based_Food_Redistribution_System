@@ -7,12 +7,12 @@ export default function ExpiryAlerts() {
 
         <BusinessLayout>
 
-            <div className="expiry-page">
+            <div className="expiry-page fb-animate-in">
 
-                <div className="expiry-page-header">
+                <div className="fb-page-header">
 
                     <div>
-                        <h2>Expiry Alerts</h2>
+                        <h2>⚠️ Expiry Alerts</h2>
 
                         <p>
                             Monitor food items that are expired

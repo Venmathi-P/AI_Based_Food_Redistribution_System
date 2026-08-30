@@ -1,0 +1,438 @@
+/* =======================================================================
+   FOODBRIDGE DESIGN SYSTEM
+   Global tokens + premium overrides for Bootstrap primitives already
+   used throughout the app (card, btn, badge, table, alert, progress,
+   form-control, spinner). This file is intentionally the single source
+   of visual truth so every page gets a consistent, professional look
+   without needing per-page rewrites.
+   ======================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Brand palette — sustainability green + deep indigo */
+  --fb-primary: #4F46E5;
+  --fb-primary-dark: #3730A3;
+  --fb-primary-light: #EEF2FF;
+  --fb-accent: #16A34A;
+  --fb-accent-dark: #15803D;
+  --fb-accent-light: #ECFDF5;
+
+  --fb-success: #16A34A;
+  --fb-success-light: #ECFDF5;
+  --fb-warning: #D97706;
+  --fb-warning-light: #FFFBEB;
+  --fb-danger: #DC2626;
+  --fb-danger-light: #FEF2F2;
+  --fb-info: #2563EB;
+  --fb-info-light: #EFF6FF;
+
+  --fb-ink-900: #0F172A;
+  --fb-ink-800: #1E293B;
+  --fb-ink-600: #475569;
+  --fb-ink-400: #94A3B8;
+  --fb-border: #E6E9F2;
+  --fb-surface: #FFFFFF;
+  --fb-bg: #F5F6FA;
+
+  --fb-radius-sm: 8px;
+  --fb-radius: 14px;
+  --fb-radius-lg: 20px;
+
+  --fb-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --fb-shadow: 0 4px 16px rgba(30, 41, 87, 0.06);
+  --fb-shadow-md: 0 10px 30px rgba(30, 41, 87, 0.10);
+  --fb-shadow-lg: 0 20px 45px rgba(30, 41, 87, 0.14);
+
+  --fb-sidebar-width: 264px;
+  --fb-topbar-height: 72px;
+
+  font-synthesis: none;
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--fb-bg) !important;
+  color: var(--fb-ink-800);
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  color: var(--fb-ink-900);
+  letter-spacing: -0.01em;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD2E1; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #A6AFC4; }
+
+a { color: var(--fb-primary); }
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes fbFadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fbPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@keyframes fbShimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.fb-animate-in {
+  animation: fbFadeInUp 0.45s ease both;
+}
+
+/* stagger helper for grids of cards */
+.row > * { animation: fbFadeInUp 0.4s ease both; }
+.row > *:nth-child(1) { animation-delay: 0.02s; }
+.row > *:nth-child(2) { animation-delay: 0.06s; }
+.row > *:nth-child(3) { animation-delay: 0.10s; }
+.row > *:nth-child(4) { animation-delay: 0.14s; }
+.row > *:nth-child(5) { animation-delay: 0.18s; }
+.row > *:nth-child(6) { animation-delay: 0.22s; }
+
+/* =========================================================
+   BOOTSTRAP CARD OVERRIDE
+   ========================================================= */
+
+.card {
+  border: 1px solid var(--fb-border) !important;
+  border-radius: var(--fb-radius) !important;
+  box-shadow: var(--fb-shadow) !important;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.card.shadow, .card.shadow-sm {
+  box-shadow: var(--fb-shadow) !important;
+}
+
+.card-body {
+  padding: 1.5rem !important;
+}
+
+.card-header {
+  background: var(--fb-surface) !important;
+  border-bottom: 1px solid var(--fb-border) !important;
+  font-weight: 700;
+  padding: 1rem 1.5rem !important;
+}
+
+/* Generic section shells used throughout the app */
+.dashboard-section,
+.expiry-section {
+  background: var(--fb-surface);
+  border: 1px solid var(--fb-border);
+  border-radius: var(--fb-radius-lg);
+  padding: 24px;
+  box-shadow: var(--fb-shadow);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  padding: 0.55rem 1.15rem !important;
+  letter-spacing: 0.01em;
+  transition: all 0.2s ease !important;
+  border-width: 1.5px !important;
+}
+
+.btn:active { transform: translateY(0); }
+.btn:not(:disabled):hover { transform: translateY(-1px); }
+
+.btn-sm {
+  padding: 0.35rem 0.75rem !important;
+  border-radius: 8px !important;
+}
+
+.btn-primary {
+  background: var(--fb-primary) !important;
+  border-color: var(--fb-primary) !important;
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.28);
+}
+.btn-primary:hover { background: var(--fb-primary-dark) !important; border-color: var(--fb-primary-dark) !important; }
+
+.btn-success {
+  background: var(--fb-accent) !important;
+  border-color: var(--fb-accent) !important;
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.25);
+}
+.btn-success:hover { background: var(--fb-accent-dark) !important; border-color: var(--fb-accent-dark) !important; }
+
+.btn-danger {
+  background: var(--fb-danger) !important;
+  border-color: var(--fb-danger) !important;
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.2);
+}
+
+.btn-outline-primary {
+  color: var(--fb-primary) !important;
+  border-color: var(--fb-primary) !important;
+  background: transparent !important;
+}
+.btn-outline-primary:hover {
+  background: var(--fb-primary) !important;
+  color: #fff !important;
+}
+
+.btn-outline-secondary { border-color: var(--fb-border) !important; color: var(--fb-ink-600) !important; }
+
+/* =========================================================
+   BADGES / STATUS PILLS
+   ========================================================= */
+
+.badge {
+  font-weight: 600 !important;
+  padding: 0.42em 0.85em !important;
+  border-radius: 999px !important;
+  letter-spacing: 0.01em;
+  font-size: 0.76rem !important;
+}
+
+.bg-success { background-color: var(--fb-success) !important; }
+.bg-danger  { background-color: var(--fb-danger) !important; }
+.bg-warning { background-color: #FBBF24 !important; }
+.bg-primary { background-color: var(--fb-primary) !important; }
+.bg-secondary { background-color: #94A3B8 !important; }
+.bg-info { background-color: var(--fb-info) !important; }
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.table {
+  --bs-table-hover-bg: #F8FAFF;
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background: #F8FAFC;
+  color: var(--fb-ink-600);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  border-bottom: 1px solid var(--fb-border) !important;
+  padding: 0.9rem 1rem;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: 0.95rem 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #F1F3F9;
+  color: var(--fb-ink-800);
+}
+
+.table tbody tr:last-child td { border-bottom: none; }
+.table-responsive { border-radius: var(--fb-radius); overflow: hidden; }
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.form-control, .form-select {
+  border-radius: 10px !important;
+  border: 1.5px solid var(--fb-border) !important;
+  padding: 0.65rem 0.9rem !important;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--fb-primary) !important;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12) !important;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--fb-ink-600);
+  margin-bottom: 0.4rem;
+}
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.alert {
+  border-radius: 12px !important;
+  border: 1px solid transparent !important;
+  padding: 1rem 1.15rem !important;
+}
+
+.alert-light { background: #F8FAFC !important; border-color: var(--fb-border) !important; color: var(--fb-ink-800) !important; }
+.alert-warning { background: var(--fb-warning-light) !important; color: #92400E !important; border-color: #FDE9C8 !important; }
+.alert-danger { background: var(--fb-danger-light) !important; color: #991B1B !important; border-color: #FBD5D5 !important; }
+.alert-success { background: var(--fb-success-light) !important; color: #166534 !important; border-color: #BBF7D0 !important; }
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+.progress {
+  border-radius: 999px !important;
+  background: #EEF1F8 !important;
+  overflow: hidden;
+}
+
+.progress-bar {
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+/* =========================================================
+   SPINNER / LOADING
+   ========================================================= */
+
+.spinner-border { color: var(--fb-primary); }
+
+.fb-skeleton {
+  background: linear-gradient(90deg, #EEF0F6 25%, #F7F8FC 37%, #EEF0F6 63%);
+  background-size: 400px 100%;
+  animation: fbShimmer 1.4s ease-in-out infinite;
+  border-radius: 10px;
+}
+
+/* =========================================================
+   REUSABLE PAGE UTILITIES
+   ========================================================= */
+
+.fb-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.fb-page-header h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.fb-page-header p {
+  color: var(--fb-ink-600);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.fb-page-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fb-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fb-section-title h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.fb-section-title small {
+  color: var(--fb-ink-600);
+}
+
+/* Risk / status pill helpers (opt-in classes, non-breaking) */
+.fb-risk-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+.fb-risk-low    { background: var(--fb-success-light); color: var(--fb-accent-dark); }
+.fb-risk-medium { background: var(--fb-warning-light); color: #92400E; }
+.fb-risk-high,
+.fb-risk-expired{ background: var(--fb-danger-light); color: #991B1B; }
+
+/* Empty state */
+.fb-empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--fb-ink-600);
+}
+.fb-empty-state .fb-empty-icon {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+.fb-empty-state strong {
+  display: block;
+  color: var(--fb-ink-800);
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+/* Generic stat accent bar used by DashboardCard */
+.fb-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+.fb-stat-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--fb-accent-color, var(--fb-primary));
+}
+.fb-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fb-shadow-md) !important;
+}
+.fb-stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  background: color-mix(in srgb, var(--fb-accent-color, var(--fb-primary)) 12%, white);
+  color: var(--fb-accent-color, var(--fb-primary));
+  margin-bottom: 12px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 992px) {
+  .fb-page-header { flex-direction: column; }
+}

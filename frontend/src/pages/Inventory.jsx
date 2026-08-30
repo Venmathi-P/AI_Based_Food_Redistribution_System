@@ -11,18 +11,21 @@ function Inventory() {
 
         <BusinessLayout>
 
-            <div className="container-fluid">
+            <div className="container-fluid fb-animate-in">
 
-                <h2 className="mb-4">
-                    📦 Inventory Management
-                </h2>
+                <div className="fb-page-header">
+                    <div>
+                        <h2>📦 Inventory Management</h2>
+                        <p>Track stock, upload in bulk, and train the AI model on your inventory.</p>
+                    </div>
+                </div>
 
 
                 {/* ========================================= */}
                 {/* INVENTORY INPUT */}
                 {/* ========================================= */}
 
-                <div className="row mb-4">
+                <div className="row mb-4 g-4">
 
                     {/* Manual Inventory */}
 
@@ -51,7 +54,7 @@ function Inventory() {
                 {/* BELOW MANUAL + BULK/POS */}
                 {/* ========================================= */}
 
-                <div className="row mb-4">
+                <div className="row mb-4 g-4">
 
                     <div className="col-12">
 
@@ -66,7 +69,7 @@ function Inventory() {
                 {/* INVENTORY TABLE */}
                 {/* ========================================= */}
 
-                <div className="card shadow">
+                <div className="card">
 
                     <div className="card-body">
 

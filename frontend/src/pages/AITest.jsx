@@ -3,14 +3,19 @@ import AIAnalysis from "../components/AIAnalysis";
 
 const AITest = () => {
   return (
-    <div className="container mt-5">
-      <h2>FoodBridge AI Analysis</h2>
+    <div className="container py-5 fb-animate-in">
+      <div className="fb-page-header">
+        <div>
+          <h2>🤖 FoodBridge AI Analysis</h2>
+          <p>Test AI analysis for Inventory ID 65</p>
+        </div>
+      </div>
 
-      <p className="text-muted">
-        Test AI analysis for Inventory ID 65
-      </p>
-
-      <AIAnalysis inventoryId={65} />
+      <div className="card">
+        <div className="card-body">
+          <AIAnalysis inventoryId={65} />
+        </div>
+      </div>
     </div>
   );
 };

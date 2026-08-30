@@ -34,15 +34,21 @@ function History() {
 
         <NGOLayout>
 
-            <div className="container-fluid">
+            <div className="container-fluid fb-animate-in">
 
-                <h2 className="mb-4">
+                <div className="fb-page-header">
+                    <div>
+                <h2 className="mb-0">
 
                     Donation History
 
                 </h2>
+                    </div>
+                </div>
 
-                <table className="table table-striped">
+                <div className="card">
+                  <div className="card-body">
+                    <table className="table table-striped">
 
                     <thead>
 
@@ -118,6 +124,8 @@ function History() {
                     </tbody>
 
                 </table>
+                  </div>
+                </div>
 
             </div>
 

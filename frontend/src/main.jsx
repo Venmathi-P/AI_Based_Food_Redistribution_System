@@ -7,6 +7,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./styles/dashboard.css";
+import "./styles/theme.css";
+import "./styles/shell.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>

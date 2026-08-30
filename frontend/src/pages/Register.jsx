@@ -55,7 +55,7 @@ function Register() {
 
         <div className="register-page">
 
-            <div className="register-container">
+            <div className="register-container fb-animate-in">
 
                 {/* Left Side */}
 

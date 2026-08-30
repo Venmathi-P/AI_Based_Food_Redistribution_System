@@ -46,13 +46,17 @@ function PickupSchedule() {
 
         <NGOLayout>
 
-            <div className="container-fluid">
+            <div className="container-fluid fb-animate-in">
 
-                <h2 className="mb-4">
+                <div className="fb-page-header">
+                    <div>
+                <h2 className="mb-0">
                     Pickup Schedule
                 </h2>
+                    </div>
+                </div>
 
-                <div className="card shadow-sm">
+                <div className="card">
 
                     <div className="card-body">
 

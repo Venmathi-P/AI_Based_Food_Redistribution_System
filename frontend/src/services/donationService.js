@@ -1,11 +1,27 @@
 import api from "./api";
 
-// Donate Food
-export const donateFood = async (inventoryId) => {
-    const response = await api.post(`/donations/${inventoryId}`);
+// Donate Food / Create Surplus Listing
+export const donateFood = async (
+    inventoryId,
+    pickupLocation,
+    availableFrom,
+    availableUntil
+) => {
+
+    const response = await api.post(
+        `/donations/${inventoryId}`,
+        null,
+        {
+            params: {
+                pickup_location: pickupLocation,
+                available_from: availableFrom,
+                available_until: availableUntil
+            }
+        }
+    );
+
     return response.data;
 };
-
 // Business Donations
 export const getPendingDonations = async () => {
     const response = await api.get("/donations/pending");
@@ -81,6 +97,15 @@ export const getHistory = async () => {
 
     const response = await api.get(
         "/donations/history"
+    );
+
+    return response.data;
+};
+// Notifications
+export const getNotifications = async () => {
+
+    const response = await api.get(
+        "/donations/notifications"
     );
 
     return response.data;

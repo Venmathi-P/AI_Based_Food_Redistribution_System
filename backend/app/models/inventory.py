@@ -29,4 +29,3 @@ class Inventory(Base):
 
     storage_capacity = Column(Integer, default=100)
 
-    created_at = Column(DateTime, server_default=func.now())

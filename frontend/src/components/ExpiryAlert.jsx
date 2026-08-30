@@ -6,6 +6,14 @@ function ExpiryAlert() {
     const [alerts, setAlerts] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const riskClass = (risk) => {
+        const r = String(risk || "").toLowerCase();
+        if (r.includes("expired")) return "fb-risk-expired";
+        if (r.includes("high")) return "fb-risk-high";
+        if (r.includes("medium") || r.includes("moderate")) return "fb-risk-medium";
+        return "fb-risk-low";
+    };
+
     useEffect(() => {
 
         const businessId = localStorage.getItem("user_id");
@@ -47,7 +55,14 @@ function ExpiryAlert() {
         return (
             <div className="expiry-section">
                 <h3>⚠️ Expiry Alerts</h3>
-                <p>Loading expiry alerts...</p>
+                <div className="fb-skeleton" style={{ height: 18, width: "40%", marginBottom: 14 }} />
+                <div className="row g-3">
+                    {[1, 2, 3, 4].map((n) => (
+                        <div className="col-md-3" key={n}>
+                            <div className="fb-skeleton" style={{ height: 130, borderRadius: 12 }} />
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }
@@ -106,7 +121,7 @@ function ExpiryAlert() {
 
                             <p>
                                 <strong>Risk:</strong>{" "}
-                                <span className="risk-text">
+                                <span className={`fb-risk-pill ${riskClass(item.risk)}`}>
                                     {item.risk}
                                 </span>
                             </p>

@@ -17,7 +17,9 @@ import History from "./pages/NGO/History";
 import Profile from "./pages/NGO/Profile";
 import Dashboard from "./pages/Dashboard";
 import AITest from "./pages/AITest";
-
+import NGOMatching from "./pages/NGO/NGOMatching";
+import Sustainability from "./pages/NGO/Sustainability";
+import Requirements from "./pages/NGO/Requirements";
 function App() {
 
     return (
@@ -83,7 +85,16 @@ function App() {
                 />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/ai-test" element={<AITest />} />
+                <Route path="/ngo/matching" element={<NGOMatching />} />
+                <Route
+    path="/ngo/sustainability"
+    element={<Sustainability />}
 
+/>
+                <Route
+    path="/ngo/requirements"
+    element={<Requirements />}
+/>
             </Routes>
 
         </BrowserRouter>

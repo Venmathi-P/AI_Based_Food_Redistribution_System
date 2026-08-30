@@ -11,13 +11,17 @@ function Profile() {
 
         <NGOLayout>
 
-            <div className="container-fluid">
+            <div className="container-fluid fb-animate-in">
 
-                <h2 className="mb-4">
+                <div className="fb-page-header">
+                    <div>
+                <h2 className="mb-0">
                     🏥 NGO Profile
                 </h2>
+                    </div>
+                </div>
 
-                <div className="card shadow border-0">
+                <div className="card border-0">
 
                     <div className="card-header bg-success text-white">
 
